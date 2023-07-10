@@ -1,6 +1,6 @@
 [package]
 name = "rebound-sys"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Spencer Nelson"]
 description = "Low-level bindings to the REBOUND C library for N-body simulations"
