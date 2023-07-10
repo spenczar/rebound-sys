@@ -9,6 +9,17 @@ license-file = "LICENSE"
 keywords = ["rebound", "astrodynamics", "astronomy", "n-body"]
 categories = ["aerospace::simulation", "science"]
 links = "rebound"
+exclude = [
+  "vendor/rebound/docs/*",
+  "vendor/rebound/ipython_examples/*",
+  "vendor/rebound/examples/*",
+  "vendor/rebound/legacy/*",
+  "vendor/rebound/mkdocs.yml",
+  "vendor/rebound/others/*",
+  "vendor/rebound/postBuild",
+  "vendor/rebound/pyproject.toml",
+  "vendor/rebound/rebound/*"
+]
 
 [build-dependencies]
 bindgen = "0.66.1"
