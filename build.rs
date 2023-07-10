@@ -23,6 +23,7 @@ fn main() {
             "vendor/rebound/src/gravity.c",
             "vendor/rebound/src/integrator.c",
             "vendor/rebound/src/integrator_whfast.c",
+            "vendor/rebound/src/integrator_whfast512.c",
             "vendor/rebound/src/integrator_saba.c",
             "vendor/rebound/src/integrator_ias15.c",
             "vendor/rebound/src/integrator_sei.c",
@@ -49,18 +50,25 @@ fn main() {
         .define("LIBREBOUND", "1")
         .include("vendor/rebound/src")
         .warnings(false)
-	.compile("rebound");
+        .compile("rebound");
 
     let bindings = bindgen::Builder::default()
         .header(headers_path_str)
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
-        .allowlist_function("reb_")
-        .allowlist_type("reb_simulation")
-	.allowlist_type("reb_particle")
+        .allowlist_function("reb_.*")
+        .allowlist_type("reb_.*")
+        .allowlist_type("REB_.*")
         .allowlist_var("reb_.*")
-	.blocklist_type(".*pthread_mutex.*")
-	.raw_line("use libc::pthread_mutex_t;")
-	.generate_comments(true)
+        .allowlist_var("REB_.*")
+        .allowlist_type("RADAU")
+        .allowlist_type("DHEM")
+        .allowlist_type("_?controlVars")
+        .allowlist_type("UNIVERSAL_VARS")
+        .allowlist_type("_?StumpfCoefficients")
+        .allowlist_recursively(false)
+        .raw_line("use libc::{pthread_mutex_t,FILE};")
+        .raw_line("type sig_atomic_t = std::os::raw::c_int;")
+        .generate_comments(true)
         .generate()
         .expect("Unable to generate bindings");
 
