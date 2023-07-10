@@ -5,6 +5,7 @@ edition = "2021"
 authors = ["Spencer Nelson"]
 description = "Low-level bindings to the REBOUND C library for N-body simulations"
 repository = "https://github.com/spenczar/rebound-sys"
+license = "GPL-3.0"
 license-file = "LICENSE"
 keywords = ["rebound", "astrodynamics", "astronomy", "n-body"]
 categories = ["aerospace::simulation", "science"]
