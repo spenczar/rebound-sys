@@ -77,4 +77,8 @@ fn main() {
     bindings
         .write_to_file(out_path.join("bindings.rs"))
         .expect("Couldn't write bindings!");
+
+    println!("copying rebound.h to {}", out_path.to_str().unwrap());
+    std::fs::copy(headers_path_str, out_path.join("rebound.h")).unwrap();
+    println!("cargo:include={}", out_path.to_str().unwrap());
 }
