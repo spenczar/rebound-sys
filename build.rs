@@ -2,7 +2,7 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() {
-    let libdir_path = PathBuf::from("./vendor/src")
+    let libdir_path = PathBuf::from("./vendor/rebound/src")
         .canonicalize()
         .expect("Unable to find libdir");
 
@@ -17,46 +17,50 @@ fn main() {
 
     cc::Build::new()
         .files(vec![
-            "vendor/src/rebound.c",
-            "vendor/src/tree.c",
-            "vendor/src/particle.c",
-            "vendor/src/gravity.c",
-            "vendor/src/integrator.c",
-            "vendor/src/integrator_whfast.c",
-            "vendor/src/integrator_saba.c",
-            "vendor/src/integrator_ias15.c",
-            "vendor/src/integrator_sei.c",
-            "vendor/src/integrator_bs.c",
-            "vendor/src/integrator_leapfrog.c",
-            "vendor/src/integrator_mercurius.c",
-            "vendor/src/integrator_eos.c",
-            "vendor/src/integrator_tes.c",
-            "vendor/src/boundary.c",
-            "vendor/src/input.c",
-            "vendor/src/binarydiff.c",
-            "vendor/src/output.c",
-            "vendor/src/collision.c",
-            "vendor/src/communication_mpi.c",
-            "vendor/src/display.c",
-            "vendor/src/tools.c",
-            "vendor/src/rotations.c",
-            "vendor/src/derivatives.c",
-            "vendor/src/simulationarchive.c",
-            "vendor/src/glad.c",
-            "vendor/src/integrator_janus.c",
-            "vendor/src/transformations.c",
+            "vendor/rebound/src/rebound.c",
+            "vendor/rebound/src/tree.c",
+            "vendor/rebound/src/particle.c",
+            "vendor/rebound/src/gravity.c",
+            "vendor/rebound/src/integrator.c",
+            "vendor/rebound/src/integrator_whfast.c",
+            "vendor/rebound/src/integrator_saba.c",
+            "vendor/rebound/src/integrator_ias15.c",
+            "vendor/rebound/src/integrator_sei.c",
+            "vendor/rebound/src/integrator_bs.c",
+            "vendor/rebound/src/integrator_leapfrog.c",
+            "vendor/rebound/src/integrator_mercurius.c",
+            "vendor/rebound/src/integrator_eos.c",
+            "vendor/rebound/src/integrator_tes.c",
+            "vendor/rebound/src/boundary.c",
+            "vendor/rebound/src/input.c",
+            "vendor/rebound/src/binarydiff.c",
+            "vendor/rebound/src/output.c",
+            "vendor/rebound/src/collision.c",
+            "vendor/rebound/src/communication_mpi.c",
+            "vendor/rebound/src/display.c",
+            "vendor/rebound/src/tools.c",
+            "vendor/rebound/src/rotations.c",
+            "vendor/rebound/src/derivatives.c",
+            "vendor/rebound/src/simulationarchive.c",
+            "vendor/rebound/src/glad.c",
+            "vendor/rebound/src/integrator_janus.c",
+            "vendor/rebound/src/transformations.c",
         ])
         .define("LIBREBOUND", "1")
-        .include("vendor/src")
+        .include("vendor/rebound/src")
         .warnings(false)
-        .compile("rebound");
+	.compile("rebound");
 
     let bindings = bindgen::Builder::default()
         .header(headers_path_str)
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
-        .allowlist_function("reb_.*")
-        .allowlist_type("reb_.*")
+        .allowlist_function("reb_")
+        .allowlist_type("reb_simulation")
+	.allowlist_type("reb_particle")
         .allowlist_var("reb_.*")
+	.blocklist_type(".*pthread_mutex.*")
+	.raw_line("use libc::pthread_mutex_t;")
+	.generate_comments(true)
         .generate()
         .expect("Unable to generate bindings");
 
