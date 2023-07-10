@@ -7,3 +7,7 @@ The generated bindings are currently only for a statically linked
 version of librebound. This isn't for a deep reason; it's just that I
 expect that dynamically linking to rebound is pretty unusual, and it's
 easier to provide a statically linked sys crate.
+
+The `rebound.h` file is provided via the `DEP_REBOUND_INCLUDE`
+environment variable, which points to the directory that contains that
+header.
