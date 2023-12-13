@@ -4,7 +4,7 @@ use std::path::PathBuf;
 fn main() {
     let libdir_path = PathBuf::from("./vendor/rebound/src")
         .canonicalize()
-        .expect("Unable to find libdir");
+        .expect("Unable to find vendor/rebound/src libdir. Did you initialize the git submodule?");
 
     let headers_path = libdir_path.join("rebound.h");
     let headers_path_str = headers_path
