@@ -17,37 +17,38 @@ fn main() {
 
     cc::Build::new()
         .files(vec![
-            "vendor/rebound/src/rebound.c",
-            "vendor/rebound/src/tree.c",
-            "vendor/rebound/src/particle.c",
-            "vendor/rebound/src/gravity.c",
-            "vendor/rebound/src/integrator.c",
-            "vendor/rebound/src/integrator_whfast.c",
-            "vendor/rebound/src/integrator_whfast512.c",
-            "vendor/rebound/src/integrator_saba.c",
-            "vendor/rebound/src/integrator_ias15.c",
-            "vendor/rebound/src/integrator_sei.c",
-            "vendor/rebound/src/integrator_bs.c",
-            "vendor/rebound/src/integrator_leapfrog.c",
-            "vendor/rebound/src/integrator_mercurius.c",
-            "vendor/rebound/src/integrator_eos.c",
-            "vendor/rebound/src/integrator_tes.c",
-            "vendor/rebound/src/boundary.c",
-            "vendor/rebound/src/input.c",
             "vendor/rebound/src/binarydiff.c",
-            "vendor/rebound/src/output.c",
+            "vendor/rebound/src/boundary.c",
             "vendor/rebound/src/collision.c",
             "vendor/rebound/src/communication_mpi.c",
-            "vendor/rebound/src/display.c",
-            "vendor/rebound/src/tools.c",
-            "vendor/rebound/src/rotations.c",
             "vendor/rebound/src/derivatives.c",
-            "vendor/rebound/src/simulationarchive.c",
+            "vendor/rebound/src/display.c",
+	    "vendor/rebound/src/fmemopen.c",
             "vendor/rebound/src/glad.c",
+            "vendor/rebound/src/gravity.c",
+            "vendor/rebound/src/input.c",
+            "vendor/rebound/src/integrator.c",
+            "vendor/rebound/src/integrator_bs.c",
+            "vendor/rebound/src/integrator_eos.c",
+            "vendor/rebound/src/integrator_ias15.c",
             "vendor/rebound/src/integrator_janus.c",
+            "vendor/rebound/src/integrator_leapfrog.c",
+            "vendor/rebound/src/integrator_mercurius.c",
+            "vendor/rebound/src/integrator_saba.c",
+            "vendor/rebound/src/integrator_sei.c",
+            "vendor/rebound/src/integrator_whfast.c",
+            "vendor/rebound/src/integrator_whfast512.c",
+            "vendor/rebound/src/output.c",
+            "vendor/rebound/src/particle.c",
+            "vendor/rebound/src/rebound.c",
+            "vendor/rebound/src/rotations.c",
+            "vendor/rebound/src/simulationarchive.c",
+            "vendor/rebound/src/tools.c",
             "vendor/rebound/src/transformations.c",
+            "vendor/rebound/src/tree.c",
         ])
         .define("LIBREBOUND", "1")
+	.define("_GNU_SOURCE", None)
         .include("vendor/rebound/src")
         .warnings(false)
         .compile("rebound");
@@ -66,7 +67,7 @@ fn main() {
         .allowlist_type("UNIVERSAL_VARS")
         .allowlist_type("_?StumpfCoefficients")
         .allowlist_recursively(false)
-        .raw_line("use libc::{pthread_mutex_t,FILE};")
+        .raw_line("use libc::{pthread_mutex_t,FILE,pthread_t};")
         .raw_line("type sig_atomic_t = std::os::raw::c_int;")
         .generate_comments(true)
         .generate()
